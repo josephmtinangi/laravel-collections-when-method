@@ -11,13 +11,13 @@ class HostController extends Controller
     {
     	$hosts = User::get()->toArray();
     	
-    	$inUsa = collect($hosts)->where('location', 'USA');
-
-    	if(request('retired')){
-    		$inUsa = $inUsa->filter(function($employee) {
-    			return ! $employee['is_active'];
-    		});
-    	}
+    	$inUsa = collect($hosts)
+    				->where('location', 'USA')
+    				->when(request('retired'), function ($collection) {
+    					return $collection->reject(function($employee) {
+    						return $employee['is_active'];
+    					});
+    				});
 
     	return $inUsa;
     }
