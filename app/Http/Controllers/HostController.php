@@ -9,7 +9,7 @@ class HostController extends Controller
 {
     public function index()
     {
-    	$hosts = User::get()->toArray();
+    	$hosts = User::get();
     	
     	$inUsa = collect($hosts)
     				->where('location', 'USA')
@@ -19,6 +19,7 @@ class HostController extends Controller
     					});
     				});
 
-    	return $inUsa;
+  
+    	return view('hosts.index', compact('hosts'));
     }
 }
